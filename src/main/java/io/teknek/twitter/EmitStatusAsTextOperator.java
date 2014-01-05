@@ -1,7 +1,8 @@
 package io.teknek.twitter;
 
-import java.io.IOException;
-
+import io.teknek.model.ITuple;
+import io.teknek.model.Operator;
+import io.teknek.model.Tuple;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.conf.ConfigurationBuilder;
@@ -10,15 +11,12 @@ import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 import twitter4j.json.JSONObjectType;
 import twitter4j.json.JSONObjectType.Type;
-import io.teknek.model.ITuple;
-import io.teknek.model.Operator;
-import io.teknek.model.Tuple;
 
-public class EmitStatusOperator extends Operator {
+public class EmitStatusAsTextOperator extends Operator{
 
-  private final z_T4JInternalJSONImplFactory factory;
+ private final z_T4JInternalJSONImplFactory factory;
   
-  public EmitStatusOperator(){
+  public EmitStatusAsTextOperator(){
     this.factory = new z_T4JInternalJSONImplFactory(new ConfigurationBuilder().build());
   }
   
@@ -31,11 +29,10 @@ public class EmitStatusOperator extends Operator {
       Status result = processMessage(json);
       if (result != null){
         ITuple tup = new Tuple();
-        tup.setField("status", result);
+        tup.setField("statusAsText", result.getText());
         collector.emit(tup);
       }
     } catch (JSONException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
