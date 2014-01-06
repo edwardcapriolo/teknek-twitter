@@ -57,10 +57,10 @@ class TwitterStreamFeedPartition extends FeedPartition {
   public void initialize() {
     StatusesSampleEndpoint endpoint = new StatusesSampleEndpoint();
     endpoint.stallWarnings(false);
-    Authentication auth = new OAuth1(feed.getProperties().get(TwitterStreamFeed.CONSUMER_KEY).toString(), 
-            feed.getProperties().get(TwitterStreamFeed.CONSUMER_SECRET).toString(), 
-            feed.getProperties().get(TwitterStreamFeed.TOKEN).toString(), 
-            feed.getProperties().get(TwitterStreamFeed.SECRET).toString());
+    Authentication auth = new OAuth1((String) feed.getProperties().get(TwitterStreamFeed.CONSUMER_KEY), 
+            (String) feed.getProperties().get(TwitterStreamFeed.CONSUMER_SECRET), 
+            (String) feed.getProperties().get(TwitterStreamFeed.TOKEN), 
+            (String) feed.getProperties().get(TwitterStreamFeed.SECRET));
     client = new ClientBuilder()
       .name("sampleExampleClient")
       .hosts(Constants.STREAM_HOST)
