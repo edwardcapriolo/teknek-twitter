@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>io.teknek</groupId>
 			<artifactId>teknek-core</artifactId>
-			<version>0.0.1</version>
+			<version>0.0.2-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.codehaus.jackson</groupId>
@@ -79,7 +79,7 @@
 		<dependency>
 			<groupId>io.teknek</groupId>
 			<artifactId>teknek-core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>

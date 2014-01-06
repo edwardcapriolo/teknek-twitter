@@ -51,13 +51,17 @@ public class EndToEndTest extends EmbeddedZooKeeperServer {
     }
     return result;
   }
-  
+   
   @Test
   public void hangAround() throws JsonGenerationException, JsonMappingException, IOException {
+    Map<String,Object> params = MapBuilder.makeMap(EmitFieldsMatchingPattern.SOURCE_FIELD, "statusAsText",
+            EmitFieldsMatchingPattern.REGEX,  "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]" ) ;
     p = new Plan().withFeedDesc(
             new FeedDesc().withFeedClass(TwitterStreamFeed.class.getName()).withProperties(getCredentialsOrDie()))
                   .withRootOperator(new OperatorDesc(new EmitStatusAsTextOperator())
-                    .withNextOperator(new OperatorDesc(new BeLoudOperator())));
+                    //.withNextOperator(new OperatorDesc(new BeLoudOperator())));
+                    .withNextOperator( new OperatorDesc(new EmitFieldsMatchingPattern()).withParameters(params))
+                      .withNextOperator(new OperatorDesc(new BeLoudOperator())));
     p.setName("yell");
     p.setMaxWorkers(1);
     td.applyPlan(p);
