@@ -19,6 +19,12 @@ import io.teknek.feed.Feed;
 import io.teknek.feed.FeedPartition;
 import io.teknek.model.ITuple;
 
+/**
+ * Connects to twitters streaming API and produces tuples with a field status that hold
+ * a JSON string that represents a status message (a tweet)
+ * @author edward
+ *
+ */
 public class TwitterStreamFeed extends Feed {
   
   public static final String CONSUMER_KEY = "twitter.stream.consumer.key";
@@ -31,6 +37,10 @@ public class TwitterStreamFeed extends Feed {
   }
 
   @Override
+  /**
+   * Currently produces a single partition numbered 0
+   * TODO: This needs to be shardable to make it "web scale"
+   */
   public List<FeedPartition> getFeedPartitions() {
     List<FeedPartition> results = new ArrayList<FeedPartition>();
     results.add(new TwitterStreamFeedPartition(this, "0"));
