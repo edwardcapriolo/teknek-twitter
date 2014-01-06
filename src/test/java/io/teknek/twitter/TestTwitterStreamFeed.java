@@ -16,16 +16,10 @@ import org.junit.Test;
 
 public class TestTwitterStreamFeed {
 
-  @Ignore
-  //@Test
+  //@Ignore
+  @Test
   public void letsGo(){
-    //you need to get yoru own codes from twitter
-    @SuppressWarnings("unchecked")
-    Map<String,Object> x = MapBuilder.makeMap(TwitterStreamFeed.CONSUMER_KEY,"s",
-            TwitterStreamFeed.CONSUMER_SECRET,"B",
-            TwitterStreamFeed.TOKEN, "1",
-            TwitterStreamFeed.SECRET, "j");
-    TwitterStreamFeed sf = new TwitterStreamFeed(x);
+    TwitterStreamFeed sf = new TwitterStreamFeed(EndToEndTest.getCredentialsOrDie());
     List<FeedPartition> parts = sf.getFeedPartitions();
     parts.get(0).initialize();
     ITuple it = new Tuple();
