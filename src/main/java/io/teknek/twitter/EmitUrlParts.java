@@ -13,6 +13,11 @@ public class EmitUrlParts extends Operator {
   @Override
   public void handleTuple(ITuple tuple) {
     String url = (String) tuple.getField("out");
+    System.out.println("emit url parts "+ tuple);
+    if (url ==null){
+      return;
+    }
+    System.out.println("url "+url);
     URI i = URI.create(url);
     String domain = i.getHost();
     String path = i.getPath();
