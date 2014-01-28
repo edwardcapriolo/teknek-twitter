@@ -1,5 +1,7 @@
 package io.teknek.twitter;
 
+import io.teknek.cassandra.CassandraBatchingOperator;
+import io.teknek.cassandra.CassandraOperator;
 import io.teknek.daemon.BeLoudOperator;
 import io.teknek.daemon.TeknekDaemon;
 import io.teknek.feed.FixedFeed;
@@ -51,15 +53,22 @@ public class EndToEndTest extends EmbeddedZooKeeperServer {
     }
     return result;
   }
-   
+    
   @Test
   public void hangAround() throws JsonGenerationException, JsonMappingException, IOException {
     Map<String,Object> params = MapBuilder.makeMap(EmitFieldsMatchingPattern.SOURCE_FIELD, "statusAsText",
             EmitFieldsMatchingPattern.REGEX,  "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]" ) ;
+    Map<String,Object> cassandraParams = MapBuilder.makeMap(CassandraOperator.KEYSPACE, "stats",
+            CassandraOperator.COLUMN_FAMILY, "stats",
+            CassandraOperator.HOST_LIST, "localhost:9157", 
+            CassandraBatchingOperator.BATCH_SIZE, 1,
+            CassandraOperator.PORT, 9157,
+            CassandraOperator.INCREMENT, true); 
     p = new Plan().withFeedDesc(new FeedDesc().withFeedClass(TwitterStreamFeed.class.getName()).withProperties(getCredentialsOrDie()));
     p.withRootOperator(new OperatorDesc(new EmitStatusAsTextOperator())
-      .withNextOperator( new OperatorDesc(new EmitFieldsMatchingPattern()).withParameters(params)  
-        .withNextOperator( new OperatorDesc(new EmitUrlParts())))
+      .withNextOperator(new OperatorDesc(new EmitFieldsMatchingPattern()).withParameters(params)  
+        .withNextOperator(new OperatorDesc(new EmitUrlParts())
+        .withNextOperator(new OperatorDesc(new CassandraBatchingOperator()).withParameters(cassandraParams))))
     );
     
     p.setName("yell");

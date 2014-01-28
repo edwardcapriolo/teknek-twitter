@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.Stack;
 
+import org.apache.cassandra.utils.ByteBufferUtil;
+
 import io.teknek.model.ITuple;
 import io.teknek.model.Operator;
 import io.teknek.model.Tuple;
@@ -28,7 +30,10 @@ public class EmitUrlParts extends Operator {
     StringBuilder sb = new StringBuilder();
     for (int j = 0; j <= parts.length; j++) {
       sb.append(s.pop());
-      collector.emit(new Tuple().withField("out", sb.toString()));
+      collector.emit(new Tuple().withField("out", sb.toString())
+              .withField("cassandra.operator.rowkey", ByteBufferUtil.bytes("jan-01-2014"))
+              .withField("cassandra.operator.column", ByteBufferUtil.bytes(sb.toString()))
+              .withField("cassandra.operator.value", 1L));
       sb.append(":");
     }
   }

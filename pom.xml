@@ -126,6 +126,13 @@
 			</exclusions>
 		</dependency>
 
+		 <dependency>
+                        <groupId>io.teknek</groupId>
+                        <artifactId>teknek-cassandra</artifactId>
+                        <version>0.0.2-SNAPSHOT</version>
+			<scope>test</scope>
+                </dependency>
+
 
 	</dependencies>
 	<build>
